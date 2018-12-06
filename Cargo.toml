@@ -3,6 +3,7 @@
 members = [
     "common",
     "day01",
+    "day02",
 ]
 
 [profile.release]

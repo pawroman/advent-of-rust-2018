@@ -1,0 +1,12 @@
+[package]
+name = "day02"
+version = "0.1.0"
+authors = ["Paweł Romanowski <pawroman@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+common = { path = "../common" }
+
+[dev-dependencies]
+assert_cmd = "0.10.2"
+tempfile = "3.0.5"
