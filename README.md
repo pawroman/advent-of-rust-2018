@@ -26,12 +26,14 @@ style), my motivation was to:
     * "Production grade" error handling (never
       panic, always return structured errors).
       
-    * Generic programming.
+    * Generic programming and the trait system.
+    
+    * The [2018 edition][2018]!
 
 ## Running
 
-To build & run, make sure you have Rust 1.30.1 or
-above.
+To build & run, make sure you have Rust 1.31 or
+above (using [Rust 2018][2018]).
 
 All code has tests, you can run all of them using:
 
@@ -51,3 +53,5 @@ Or to run in release mode:
 ```bash
 $ cargo run --release --bin day01 day01/input/input
 ```
+
+[2018]: https://rust-lang-nursery.github.io/edition-guide/rust-2018/index.html

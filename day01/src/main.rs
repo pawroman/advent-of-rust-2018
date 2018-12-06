@@ -1,20 +1,9 @@
 use std::collections::HashSet;
 use std::env;
-use std::fs::File;
 use std::hash::Hash;
-use std::io::{self, BufRead, BufReader};
 use std::ops::AddAssign;
-use std::path::PathBuf;
 
-#[macro_use] extern crate failure;
-use failure::Error;
-
-
-#[derive(Debug, Fail)]
-#[fail(display = "Invalid number of arguments: {}", num_args)]
-struct InvalidArguments {
-    num_args: usize,
-}
+use common::{get_input, Error};
 
 
 // maximum number of cycles to allow when looking for repeated sums
@@ -53,71 +42,9 @@ fn main() -> Result<(), Error> {
 }
 
 
-fn get_input(args: &[String]) -> Result<Vec<i64>, Error> {
-    let line_inputs;
-
-    match args.len() - 1 {
-        0 => {
-            eprintln!("Reading input from stdin.");
-            line_inputs = get_stdin_input()?;
-        },
-        arg_idx @ 1 => {
-            eprintln!("Reading input from file: `{}'.", args[arg_idx]);
-            line_inputs = get_file_input(PathBuf::from(&args[arg_idx]))?;
-        },
-        num_args => {
-            return Err(InvalidArguments { num_args }.into())
-        }
-    };
-
-    parse_lines(&line_inputs)
-}
-
-
-fn get_stdin_input() -> Result<Vec<String>, Error> {
-    let stdin = io::stdin();
-
-    // lock provides thread-safe buffered I/O
-    let stdin_lock = stdin.lock();
-
-    read_lines(stdin_lock)
-}
-
-
-fn get_file_input(file_path: PathBuf) -> Result<Vec<String>, Error> {
-    let file = File::open(file_path)?;
-    let reader = BufReader::new(file);
-
-    read_lines(reader)
-}
-
-
-fn read_lines(reader: impl BufRead) -> Result<Vec<String>, Error> {
-    let mut lines = vec![];
-
-    for line in reader.lines() {
-        // bail on first error
-        lines.push(line?);
-    }
-
-    Ok(lines)
-}
-
-
-fn parse_lines(lines: &[String]) -> Result<Vec<i64>, Error> {
-    let mut parsed = vec![];
-
-    for line in lines {
-        let number = line.parse()?;
-        parsed.push(number);
-    }
-
-    Ok(parsed)
-}
-
-
 fn find_first_cycled_sum_repeat<T>(values: &[T], max_cycles: usize) -> Option<T>
-        where T: AddAssign + Copy + Default + Eq + Hash {
+    where T: AddAssign + Copy + Default + Eq + Hash
+{
     if values.is_empty() {
         return None;
     }
@@ -152,55 +79,7 @@ fn find_first_cycled_sum_repeat<T>(values: &[T], max_cycles: usize) -> Option<T>
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use std::io::Write;
-
-    extern crate tempfile;
-
-    #[test]
-    fn test_get_args_file() {
-        let mut tmp_file = tempfile::NamedTempFile::new().unwrap();
-        tmp_file.write_all(b"1\n+2\n-33").unwrap();
-
-        let tmp_file_path = tmp_file.path().to_string_lossy();
-
-        let args: Vec<String> = vec!["prog".into(), tmp_file_path.into()];
-
-        assert_eq!(get_input(&args).unwrap(), vec![1, 2, -33]);
-    }
-
-    #[test]
-    fn test_parse_lines_all_ok() {
-        let input: Vec<String> = vec!["1".into(), "+16".into(), "-42".into()];
-
-        assert_eq!(parse_lines(&input).unwrap(), vec![1, 16, -42]);
-    }
-
-    #[test]
-    fn test_parse_lines_all_malformed() {
-        let input: Vec<String> = vec!["123very".into(), "bad".into(), "inputs666".into()];
-        let parsed = parse_lines(&input);
-
-        assert!(parsed.is_err());
-        let err = parsed.unwrap_err();
-
-        assert!(
-            format!("{}", err).starts_with("invalid digit found in string")
-        );
-    }
-
-    #[test]
-    fn test_parse_lines_some_malformed() {
-        let input: Vec<String> = vec!["123".into(), "-3-a".into(), "+2".into()];
-        let parsed = parse_lines(&input);
-
-        assert!(parsed.is_err());
-        let err = parsed.unwrap_err();
-
-        assert!(
-            format!("{}", err).starts_with("invalid digit found in string")
-        );
-    }
+    use super::find_first_cycled_sum_repeat;
 
     #[test]
     fn test_find_first_cycled_sum_repeat() {

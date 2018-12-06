@@ -1,12 +1,15 @@
 [package]
-name = "day01"
+name = "common"
 version = "0.1.0"
 authors = ["Paweł Romanowski <pawroman@gmail.com>"]
 edition = "2018"
 
+[lib]
+# disable doctest because of failure_derive import problems
+doctest = false
+
 [dependencies]
-common = { path = "../common" }
+failure = "0.1.3"
 
 [dev-dependencies]
-assert_cmd = "0.10.2"
 tempfile = "3.0.5"

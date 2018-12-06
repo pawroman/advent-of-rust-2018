@@ -11,20 +11,16 @@ mod cli {
 
     #[test]
     fn test_run_stdin() {
-        let mut cmd = Command::main_binary()
-            .unwrap();
+        let mut cmd = Command::main_binary().unwrap();
 
         // this weird syntax is circumventing a bug in assert_cmd
+        // (cannot use with_stdin() on result of main_binary() easily)
 
-        let mut stdin_cmd = cmd
-            .with_stdin();
+        let mut stdin_cmd = cmd.with_stdin();
+        let mut assert_cmd = stdin_cmd.buffer("+3\n+3\n+4\n-2\n-4");
 
-        let mut assert_cmd = stdin_cmd
-            .buffer("+3\n+3\n+4\n-2\n-4");
-
-        let assert = assert_cmd.assert();
-
-        assert
+        assert_cmd
+            .assert()
             .success()
             .stderr("Reading input from stdin.\n")
             // \ breaks the string without spaces and indents
@@ -46,9 +42,8 @@ mod cli {
 
         cmd.arg(tmp_file_path.into_owned());
 
-        let assert = cmd.assert();
-
-        assert
+        cmd
+            .assert()
             .success()
             .stdout("Sum of frequencies: 592\n\
                      First repeating frequency: 241\n");
@@ -62,9 +57,8 @@ mod cli {
             .arg("blah")
             .arg("blah");
 
-        let assert = cmd.assert();
-
-        assert
+        cmd
+            .assert()
             .failure()
             .stderr("Error: Invalid number of arguments: 2. Aborting.\n");
     }
