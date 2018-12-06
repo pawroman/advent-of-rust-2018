@@ -89,7 +89,7 @@ mod tests {
     use super::*;
     use std::io::Write;
 
-    extern crate tempfile;
+    use tempfile;
 
     #[test]
     fn test_get_args_file() {

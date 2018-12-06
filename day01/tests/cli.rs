@@ -1,13 +1,10 @@
-extern crate assert_cmd;
-extern crate tempfile;
-
-
 #[cfg(test)]
 mod cli {
     use std::io::Write;
     use std::process::Command;
 
     use assert_cmd::prelude::*;
+    use tempfile;
 
     #[test]
     fn test_run_stdin() {
