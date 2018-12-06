@@ -13,8 +13,8 @@ mod cli {
     fn test_run_stdin() {
         let mut cmd = Command::main_binary().unwrap();
 
-        // this weird syntax is circumventing a bug in assert_cmd
-        // (cannot use with_stdin() on result of main_binary() easily)
+        // this weird syntax (no chaining) is circumventing a bug in assert_cmd
+        // (cannot use with_stdin().buffer() on result of main_binary() easily)
 
         let mut stdin_cmd = cmd.with_stdin();
         let mut assert_cmd = stdin_cmd.buffer("+3\n+3\n+4\n-2\n-4");
@@ -38,9 +38,7 @@ mod cli {
         let mut tmp_file = tempfile::NamedTempFile::new().unwrap();
         tmp_file.write_all(include_str!("../input/input").as_bytes()).unwrap();
 
-        let tmp_file_path = tmp_file.path().to_string_lossy();
-
-        cmd.arg(tmp_file_path.into_owned());
+        cmd.arg(&tmp_file.path());
 
         cmd
             .assert()
