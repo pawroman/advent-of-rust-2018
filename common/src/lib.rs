@@ -6,9 +6,7 @@ use std::str::FromStr;
 
 mod errors;
 
-pub use crate::errors::Error;
-
-use crate::errors::{Fail, InvalidArguments};
+pub use crate::errors::{Error, Fail, InvalidArguments};
 
 
 pub fn get_input<T, U>(args: &[U]) -> Result<Vec<T>, Error>

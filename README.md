@@ -9,7 +9,7 @@ https://adventofcode.com/2018
 
 Although one can devise much more succinct solutions
 to some problems (write code in ad-hoc script
-style), my motivation was to:
+style and avoid over-engineering), my motivation was to:
 
 * Be correct and write the code such that it can be
   easily tested.  All the code has tests (test
