@@ -28,12 +28,14 @@ style and avoid over-engineering), my motivation was to:
       
     * Generic programming and the trait system.
     
+    * Libraries outside of std.
+    
     * The [2018 edition][2018]!
 
 ## Running
 
 To build & run, make sure you have Rust 1.31 or
-above (using [Rust 2018][2018]).
+above (all code is using [Rust 2018][2018]).
 
 All code has tests, you can run all of them using:
 

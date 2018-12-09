@@ -1,0 +1,13 @@
+[package]
+name = "day04"
+version = "0.1.0"
+authors = ["Paweł Romanowski <pawroman@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+common = { path = "../common" }
+chrono = "0.4.6"
+
+[dev-dependencies]
+assert_cmd = "0.10.2"
+tempfile = "3.0.5"
